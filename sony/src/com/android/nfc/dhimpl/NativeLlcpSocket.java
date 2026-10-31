@@ -29,6 +29,11 @@ public class NativeLlcpSocket implements DeviceHost.LlcpSocket {
     private int mSap;
     private int mLocalMiu;
     private int mLocalRw;
+    // Same JNI dead-flag contract as NativeLlcpServiceSocket: the stock
+    // libnfc_sony_jni.so looks up a boolean "mDeadFlag" on the LLCP socket
+    // objects it manages. Keep the field present so native close paths do
+    // not fail their field lookup.
+    private boolean mDeadFlag = false;
 
     public NativeLlcpSocket(){ }
 

@@ -32,6 +32,11 @@ public class NativeLlcpServiceSocket implements DeviceHost.LlcpServerSocket {
     private int mLocalLinearBufferLength;
     private int mSap;
     private String mServiceName;
+    // libnfc_sony_jni.so reads this field (boolean "mDeadFlag") from native
+    // doAccept() to tell whether the socket was closed while blocked.
+    // It must exist with exactly this name and type, otherwise the JNI
+    // lookup fails and the whole NFC process aborts on LLCP teardown.
+    private boolean mDeadFlag = false;
 
     public NativeLlcpServiceSocket() {
         mHandle = 0;
