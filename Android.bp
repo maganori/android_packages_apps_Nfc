@@ -23,6 +23,27 @@ genrule {
     out: ["com/android/nfc/NfcStatsLog.java"],
 }
 
+// Sony Configuration (ported from the lineage-16.0 Android.mk)
+// Used by devices with a Sony NFC controller (e.g. hltedcm / SC-01F).
+// The JNI library (libnfc_sony_jni) is a prebuilt provided by the vendor
+// tree, loaded via System.loadLibrary() from NativeNfcManager, so no
+// jni_libs are listed here - same as the Android.mk version.
+android_app {
+    name: "NfcSony",
+    overrides: ["Nfc"],
+    srcs: [
+        "src/**/*.java",
+        "sony/**/*.java",
+        ":statslog-Nfc-java-gen",
+    ],
+    platform_apis: true,
+    certificate: "platform",
+    static_libs: ["androidx.legacy_legacy-support-v4"],
+    optimize: {
+        enabled: false,
+    },
+}
+
 // NCI Configuration
 android_app {
     name: "NfcNci",
